@@ -1,4 +1,4 @@
-package nl.hu.v2iac.webshopapp;
+package nl.hu.v2iac.webshopapp.testcases;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
