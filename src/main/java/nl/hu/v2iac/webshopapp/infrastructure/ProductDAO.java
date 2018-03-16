@@ -42,7 +42,6 @@ public class ProductDAO {
             e.printStackTrace();
         }
 
-
         return result;
     }
 
