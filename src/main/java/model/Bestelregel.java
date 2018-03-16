@@ -4,14 +4,15 @@ public class Bestelregel {
     private int id;
     private int aantal;
     private float prijs;
-    //TODO Replace this with an Product object
-    private int product;
+    private int product; //TODO Replace this with an Product object
+    private int bestelling; //TODO Replace this with an Bestelling object
 
-    public Bestelregel(int id, int aantal, float prijs, int product) {
+    public Bestelregel(int id, int aantal, float prijs, int product, int bestelling) {
         this.id = id;
         this.aantal = aantal;
         this.prijs = prijs;
         this.product = product;
+        this.bestelling = bestelling;
     }
 
     public int getId() {
@@ -44,5 +45,13 @@ public class Bestelregel {
 
     public void setProduct(int product) {
         this.product = product;
+    }
+
+    public int getBestelling() {
+        return bestelling;
+    }
+
+    public void setBestelling(int bestelling) {
+        this.bestelling = bestelling;
     }
 }

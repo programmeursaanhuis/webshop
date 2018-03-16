@@ -6,10 +6,8 @@ public class Account {
     private int id;
     private LocalDate openDatum;
     private boolean isActief;
-    //TODO Replace this with an Adres object
-    private int factuurAdres;
-    //TODO Replace this with an Klant object
-    private int klant;
+    private int factuurAdres; //TODO Replace this with an Adres object
+    private int klant; //TODO Replace this with an Klant object
 
     public Account(int id, LocalDate openDatum, boolean isActief, int factuurAdres, int klant) {
         this.id = id;
