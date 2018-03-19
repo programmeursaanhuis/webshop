@@ -9,18 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO {
-
-    private Connection connection;
-
-    public ProductDAO(Connection connection) {
-        this.connection = connection;
-    }
+public class ProductDAO extends ConnectionBroker{
 
     public List<Product> listAll() {
         List<Product> result = new ArrayList<Product>();
 
-        try {
+        try (Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("SELECT product_id, naam, afbeelding, prijs, omschrijving, categorie FROM PRODUCT");
             ResultSet rs = pstmt.executeQuery();
@@ -37,6 +31,9 @@ public class ProductDAO {
 
                 result.add(new Product(id, naam, afbeelding, prijs, omschrijving, categorie));
             }
+            rs.close();
+    		pstmt.close();
+    		connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +45,7 @@ public class ProductDAO {
     public Product findById(int id) {
         Product result = null;
 
-        try {
+        try (Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("SELECT naam, afbeelding, prijs, omschrijving, categorie FROM PRODUCT WHERE product_id = ?");
             pstmt.setInt(1, id);
@@ -65,6 +62,9 @@ public class ProductDAO {
 
                 result = new Product(id, naam, afbeelding, prijs, omschrijving, categorie);
             }
+            rs.close();
+    		pstmt.close();
+    		connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,8 +73,9 @@ public class ProductDAO {
         return result;
     }
 
-    public void create (Product product) {
-        try {
+    private boolean create (Product product) {
+    	int affectedRows = 0;
+    	try (Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("INSERT INTO PRODUCT(product_id, naam, afbeelding, prijs, omschrijving, categorie) VALUES (?,?,?,?,?,?)");
             pstmt.setInt(1, product.getId());
@@ -84,14 +85,19 @@ public class ProductDAO {
             pstmt.setString(5, product.getOmschrijving());
             pstmt.setInt(6, product.getCategorie());
             pstmt.execute();
+    		pstmt.close();
+    		connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+		return affectedRows >= 1;
     }
 
-    public void update (Product product) {
-        try {
+    private boolean update (Product product) {
+    	int affectedRows = 0;
+		
+    	try (Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("UPDATE PRODUCT SET naam = ?, afbeelding = ?, prijs = ?, omschrijving = ?, categorie = ? WHERE product_id = ?");
             pstmt.setString(1, product.getNaam());
@@ -101,24 +107,42 @@ public class ProductDAO {
             pstmt.setInt(5, product.getCategorie());
             pstmt.setInt(6, product.getId());
             pstmt.execute();
-
+    		pstmt.close();
+    		connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    	return affectedRows >= 1;
     }
 
-    public void delete (Product product) {
-        try {
+    private boolean delete (Product product) {
+    	int affectedRows = 0;
+		
+    	try (Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM PRODUCT WHERE product_id = ?");
             pstmt.setInt(1, product.getId());
             pstmt.execute();
+    		pstmt.close();
+    		connection.close();
 
             //TODO Get rid of references to Product in other tables
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    	return affectedRows >= 1;
     }
-
+    
+    public boolean createProduct(Product product) {
+    	return create(product);
+    }
+    
+    public boolean updateProduct(Product product) {
+    	return update(product);
+    }
+    
+    public boolean deleteProduct(Product product) {
+    	return delete(product);
+    }
 }
