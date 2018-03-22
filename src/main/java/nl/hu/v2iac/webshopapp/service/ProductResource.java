@@ -23,17 +23,18 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import org.json.JSONObject;
 
-import model.Product;
-import nl.hu.v2iac.webshopapp.infrastructure.ProductService;
-import nl.hu.v2iac.webshopapp.infrastructure.ServiceProvider;
+import nl.hu.v2iac.webshopapp.model.Product;
+import nl.hu.v2iac.webshopapp.model.ProductService;
+import nl.hu.v2iac.webshopapp.model.ServiceProvider;
 
+@Path("/product/")
 public class ProductResource {
 	ProductService service = ServiceProvider.getProductService();
 	//TODO: nog niet af. code is nog in bouw
-	@Path("getproduct")
+	@Path("/getAll")
 	@GET
 	@Produces("application/json")
-	public String findAll(@PathParam("id") int id) {
+	public String findAll() {
 		JsonArrayBuilder jab = Json.createArrayBuilder();
 		for (Product p : service.listAll()) {
 			JsonObjectBuilder job = productToJsonObject(p);

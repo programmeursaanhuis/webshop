@@ -1,4 +1,4 @@
-package model;
+package nl.hu.v2iac.webshopapp.model;
 
 public class Product {
 	private int id;

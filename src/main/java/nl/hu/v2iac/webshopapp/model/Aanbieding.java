@@ -1,4 +1,4 @@
-package model;
+package nl.hu.v2iac.webshopapp.model;
 
 import java.time.LocalDate;
 

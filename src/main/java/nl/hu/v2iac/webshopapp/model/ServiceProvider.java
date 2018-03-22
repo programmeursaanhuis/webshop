@@ -1,4 +1,4 @@
-package nl.hu.v2iac.webshopapp.infrastructure;
+package nl.hu.v2iac.webshopapp.model;
 
 public class ServiceProvider {
 	private static ProductService productService = new ProductService();

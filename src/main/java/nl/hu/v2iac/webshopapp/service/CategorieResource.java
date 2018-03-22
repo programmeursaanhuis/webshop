@@ -6,8 +6,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import nl.hu.v2iac.webshopapp.infrastructure.CategorieService;
-import nl.hu.v2iac.webshopapp.infrastructure.ServiceProvider;
+import nl.hu.v2iac.webshopapp.model.CategorieService;
+import nl.hu.v2iac.webshopapp.model.ServiceProvider;
 
 @Path("categorie")
 public class CategorieResource {

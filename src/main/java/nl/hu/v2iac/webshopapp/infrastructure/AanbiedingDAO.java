@@ -1,11 +1,11 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
-import model.Aanbieding;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.hu.v2iac.webshopapp.model.Aanbieding;
 
 public class AanbiedingDAO extends ConnectionBroker{
 

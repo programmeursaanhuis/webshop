@@ -1,13 +1,13 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
-import model.Bestelling;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.hu.v2iac.webshopapp.model.Bestelling;
 
 public class BestellingDAO {
 

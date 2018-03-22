@@ -6,8 +6,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import nl.hu.v2iac.webshopapp.infrastructure.AdresService;
-import nl.hu.v2iac.webshopapp.infrastructure.ServiceProvider;
+import nl.hu.v2iac.webshopapp.model.AdresService;
+import nl.hu.v2iac.webshopapp.model.ServiceProvider;
 
 @Path("/adres/")
 public class AdresResource {
@@ -17,6 +17,7 @@ public class AdresResource {
     @Path("/{ID}")
     @Produces(MediaType.APPLICATION_JSON)
     public int adresById(@PathParam("id") int id){
+    	service.findById();
     	return id;
     }    
 }

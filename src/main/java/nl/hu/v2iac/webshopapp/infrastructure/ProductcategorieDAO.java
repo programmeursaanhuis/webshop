@@ -1,13 +1,13 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
-import model.Productcategorie;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.hu.v2iac.webshopapp.model.Productcategorie;
 
 public class ProductcategorieDAO {
 
