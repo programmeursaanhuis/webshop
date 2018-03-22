@@ -9,18 +9,15 @@ import java.util.List;
 
 import nl.hu.v2iac.webshopapp.model.Klant;
 
-public class KlantDAO {
+public class KlantDAO extends ConnectionBroker {
 
-    private Connection connection;
-
-    public KlantDAO(Connection connection) {
-        this.connection = connection;
+    public KlantDAO() {
     }
 
     public List<Klant> listAll() {
         List<Klant> result = new ArrayList<Klant>();
 
-        try {
+        try (Connection connection=super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("SELECT klant_id, naam, afbeelding, woonadres FROM KLANT");
             ResultSet rs = pstmt.executeQuery();
@@ -33,6 +30,10 @@ public class KlantDAO {
 
                 result.add(new Klant(id, naam, afbeelding, woonadres));
             }
+            
+            rs.close();
+            pstmt.close();
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,9 +45,9 @@ public class KlantDAO {
     public Klant getById(int id) {
         Klant result = null;
 
-        try {
+        try (Connection connection=super.getConnection()) {
 
-            PreparedStatement pstmt = connection.prepareStatement("SELECT naam, afbeelding, woonadres FROM KLANT WHERE klant_id = ?");
+            PreparedStatement pstmt = connection.prepareStatement("SELECT klant_id, naam, afbeelding, woonadres FROM klant WHERE klant_id = ?");
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
@@ -57,6 +58,10 @@ public class KlantDAO {
 
                 result = new Klant(id, naam, afbeelding, woonadres);
             }
+            
+            rs.close();
+            pstmt.close();
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,8 +70,10 @@ public class KlantDAO {
         return result;
     }
 
-    public void create(Klant klant) {
-        try {
+    public boolean create(Klant klant) {
+    		int affectedRows = 0;
+    		
+        try  (Connection connection=super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("INSERT INTO KLANT(klant_id, naam, afbeelding, woonadres) VALUES(?,?,?,?)");
             pstmt.setInt(1, klant.getId());
@@ -74,14 +81,25 @@ public class KlantDAO {
             pstmt.setString(3, klant.getAfbeelding());
             pstmt.setInt(4, klant.getWoonadres());
             pstmt.execute();
+            
+            connection.commit();
+            
+            //rs.close();
+            pstmt.close();
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        
+        return affectedRows >= 1;
     }
 
-    public void update(Klant klant) {
-        try {
+    public boolean update(Klant klant) {
+    		int affectedRows = 0;
+    		
+        try (Connection connection=super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("UPDATE KLANT SET naam = ?, afbeelding = ?, woonadres = ? WHERE klant_id = ?");
             pstmt.setString(1, klant.getNaam());
@@ -90,21 +108,36 @@ public class KlantDAO {
             pstmt.setInt(4, klant.getId());
             pstmt.execute();
 
+            connection.commit();
+            
+            //rs.close();
+            pstmt.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
-    public void delete(Klant klant) {
-        try {
-
+    public boolean delete(Klant klant) {
+    		int affectedRows = 0;
+    		
+        try (Connection connection=super.getConnection()) {
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM KLANT WHERE klant_id = ?");
             pstmt.setInt(1, klant.getId());
             pstmt.execute();
-
+            
+            connection.commit();
+            
+            //rs.close();
+            pstmt.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
 }

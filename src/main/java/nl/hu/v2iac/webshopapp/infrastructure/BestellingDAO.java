@@ -61,7 +61,9 @@ public class BestellingDAO {
         return result;
     }
 
-    public void create(Bestelling bestelling) {
+    public boolean create(Bestelling bestelling) {
+    		int affectedRows = 0;
+    		
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("INSERT INTO BESTELLING(bestelling_id, afleverAdres) VALUES (?,?)");
@@ -72,9 +74,12 @@ public class BestellingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 0;
     }
 
-    public void update(Bestelling bestelling) {
+    public boolean update(Bestelling bestelling) {
+    		int affectedRows = 0;
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("UPDATE BESTELLING SET afleverAdres = ? WHERE bestelling_id = ?");
@@ -85,9 +90,13 @@ public class BestellingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
-    public void delete(Bestelling bestelling) {
+    public boolean delete(Bestelling bestelling) {
+    		int affectedRows = 0;
+    		
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM BESTELLING WHERE bestelling_id = ?");
@@ -97,6 +106,8 @@ public class BestellingDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
 }

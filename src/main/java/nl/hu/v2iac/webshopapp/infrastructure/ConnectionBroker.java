@@ -2,6 +2,8 @@ package nl.hu.v2iac.webshopapp.infrastructure;
 
 import java.net.URI;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -9,40 +11,34 @@ import javax.sql.DataSource;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 public class ConnectionBroker {
-	//Connection result = null;
-    private DataSource connectionPool;
-    public ConnectionBroker() {
-    try {
-    	final String DATABASE_URL_PROP = System.getenv("DATABASE_URL");
-    	if (DATABASE_URL_PROP != null) {
-    		URI dbUri = new URI(DATABASE_URL_PROP);
-    		String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-    		BasicDataSource pool = new BasicDataSource();
-    		
-    		if (dbUri.getUserInfo() != null) {
-    			pool.setUsername(dbUri.getUserInfo().split(":")[0]);
-    			pool.setPassword(dbUri.getUserInfo().split(":")[1]);
-    			}
-    			pool.setDriverClassName("org.postgresql.Driver");
-    			pool.setUrl(dbUrl);
-    			pool.setInitialSize(1);
-    		
-    			connectionPool = pool;
-    			
-    	} else{
-    		InitialContext ic = new InitialContext();
-    		connectionPool = (DataSource) ic.lookup("java:comp/env/jdbc/PostgresDS");
-    	}
-    } catch (Exception e) {
-    	
-      throw new RuntimeException(e);
+    private String connectionURL = "jdbc:postgresql://localhost:5432/webshop";
+    private String username = "postgres";
+    private String password = "password";
+    private String driver = "org.postgresql.Driver";
+    private Connection con;
+
+    ConnectionBroker() {
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
+    Connection getConnection(){
+        // URL, User and Password
+        try {
+			con = DriverManager.getConnection(connectionURL, username, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return con;
     }
-  protected final Connection getConnection() {
-	  try {
-		  return connectionPool.getConnection();
-	  } catch (Exception ex) {
-		  throw new RuntimeException(ex);
-	  }
-  }
+
+    void close() throws SQLException {
+        if (con != null) {
+            con.close();
+        }
+    }
 }

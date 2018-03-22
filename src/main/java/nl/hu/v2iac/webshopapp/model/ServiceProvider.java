@@ -3,19 +3,27 @@ package nl.hu.v2iac.webshopapp.model;
 public class ServiceProvider {
 	private static ProductService productService = new ProductService();
 	private static CategorieService categorieService = new CategorieService();
-	private static AanbiedingService aanbiedingService = new AanbiedingService();
-	private static AdresService adresservice = new AdresService();
+	private static KlantService klantService = new KlantService();
+	private static AdresService adresService = new AdresService();
+	private static BestellingRegelService bestellingRegelService = new BestellingRegelService();
 	
 	public static ProductService getProductService(){
 		return productService;
 	}
-	public static AanbiedingService getAanbiedingService() {
-		return aanbiedingService;
-	}
+
 	public static CategorieService getCategorieService(){
 		return categorieService;
 	}
+	
+	public static KlantService getKlantService() {
+		return klantService;
+	}
+
+	public static BestellingRegelService getBestellingRegelService() {
+		return bestellingRegelService;
+	}
+
 	public static AdresService getAdresService() {
-		return adresservice;
+		return adresService;
 	}
 }

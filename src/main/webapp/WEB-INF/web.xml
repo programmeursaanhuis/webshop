@@ -24,4 +24,5 @@ version="3.1">
 	<servlet-name>Jersey REST Service</servlet-name>
 	<url-pattern>/restservices/*</url-pattern>
   </servlet-mapping>
+		 
 </web-app>
