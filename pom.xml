@@ -74,6 +74,21 @@
 		<artifactId>jersey-container-servlet</artifactId>
 		<version>2.25.1</version>
 	</dependency>
+	
+	<dependency>
+	  <groupId>org.glassfish</groupId>
+	  <artifactId>javax.json</artifactId>
+	  <version>1.0.4</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20160810</version>
+	</dependency>
+	
+	
     <dependency>
     	<groupId>org.postgresql</groupId>
     	<artifactId>postgresql</artifactId>

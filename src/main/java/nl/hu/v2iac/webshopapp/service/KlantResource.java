@@ -22,37 +22,38 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
-import model.Categorie;
+import model.Klant;
 import model.Product;
-import nl.hu.v2iac.webshopapp.infrastructure.CategorieService;
+import nl.hu.v2iac.webshopapp.infrastructure.KlantService;
 import nl.hu.v2iac.webshopapp.infrastructure.ServiceProvider;
 
-@Path("categorie")
-public class CategorieResource {
-    private CategorieService service = ServiceProvider.getCategorieService();
+@Path("klant")
+public class KlantResource {
+    private KlantService service = ServiceProvider.getKlantService();
     
-    @Path("/getcategories")
+    @Path("/klanten")
 	@GET
 	@Produces("application/json")
 	public String findAll(@PathParam("id") int id) {
 		JsonArrayBuilder jab = Json.createArrayBuilder();
-		for (Categorie c : service.listAll()) {
-			JsonObjectBuilder job = productToJsonObject(c);
+		for (Klant k : service.listAll()) {
+			JsonObjectBuilder job = productToJsonObject(k);
 			jab.add(job);
 		}
 		return jab.build().toString();
 	}
     
     @GET
-    @Path("/{id}")
+    @Path("/{ID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String findCatById(@PathParam("id") int id){
+    public String findKlantById(@PathParam("ID") int id){
     		JsonObjectBuilder job = Json.createObjectBuilder();
-		Categorie c = service.findCategorie(id);
-		if (c != null) {
-			job.add("id", c.getId());
-			job.add("categorie", c.getCategorie());
-			
+		Klant k = service.findKlant(id);
+		if (k!=null) {
+			job.add("id", k.getId());
+			job.add("naam", k.getNaam());
+			job.add("afbeelding", k.getAfbeelding());
+			job.add("woonadres", k.getWoonadres());
 		}else {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
@@ -60,21 +61,15 @@ public class CategorieResource {
     }    
     
     @POST
-	@Path("/createcategory")
+	@Path("/createklant")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(String json) throws SQLException { 
-    		// json komt aan als json dus je hebt geen FormParams nodig
-		//System.out.println("Grrsrc: json "+json);
 		JsonObject object = stringToJson(json);
 		float myFloatValue = BigDecimal.valueOf(((JSONObject) object).getDouble("aDouble")).floatValue();
 		
-		Categorie categorie = 
-			new Categorie
-			(	object.getInt("id"),
-				object.getString("categorie")
-			);
+		Klant k = new Klant (object.getInt("id"), object.getString("naam"), object.getString("afbeelding"), object.getInt("woonadres"));
 		
-		if ( service.create(categorie)== true){
+		if ( service.create(k)== true){
 			return Response.ok().build();
 		} else {
 			return Response.status(401).build();
@@ -82,17 +77,18 @@ public class CategorieResource {
 	}
 	
 	@DELETE
-	@Path("/deletecategorie")
+	@Path("/deleteklant")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response delete(String json) throws SQLException { 
 		JsonObject object = stringToJson(json);
 		float myFloatValue = BigDecimal.valueOf(((JSONObject) object).getDouble("aDouble")).floatValue();
 		
-		Categorie categorie = 
-				new Categorie
-				(	object.getInt("id"),
-					object.getString("categorie")
-				);
+		Klant k = new Klant (	
+			object.getInt("id"),
+			object.getString("naam"),
+			object.getString("afbeelding"),
+			object.getInt("woonadres")
+		);
 		
 		return Response.ok().build();
 	}
@@ -104,9 +100,9 @@ public class CategorieResource {
 		return object;
 	}
 
-	private JsonObjectBuilder productToJsonObject(Categorie c){
+	private JsonObjectBuilder productToJsonObject(Klant k){
 		JsonObjectBuilder job = Json.createObjectBuilder();
-		job.add("id", c.getId()).add("categorie", c.getCategorie());
+		job.add("id", k.getId()).add("naam", k.getNaam()).add("afbeelding", k.getAfbeelding()).add("woonadres", k.getWoonadres());
 		return job;
 	}
 }

@@ -9,15 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BestelregelDAO {
+public class BestelregelDAO extends ConnectionBroker {
 
     private Connection connection;
 
     public List<Bestelregel> listAll() {
         List<Bestelregel> result = new ArrayList<Bestelregel>();
 
-        try {
-
+        try(Connection connection = super.getConnection()) {
             PreparedStatement pstmt = connection.prepareStatement("SELECT bestellingRegel_id, aantal, prijs, product, bestelling FROM BESTELLING_REGEL");
             ResultSet rs = pstmt.executeQuery();
 
@@ -27,10 +26,12 @@ public class BestelregelDAO {
                 float prijs = rs.getFloat("prijs");
                 int product = rs.getInt("product"); //TODO Call ProductDAO instead
                 int bestelling = rs.getInt("bestelling"); //TODO Call BestellingDAO instead
-
                 result.add(new Bestelregel(id, aantal, prijs, product, bestelling));
             }
 
+            rs.close();
+			pstmt.close();
+			connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,9 +42,8 @@ public class BestelregelDAO {
     public Bestelregel findById(int id) {
         Bestelregel result = null;
 
-        try {
-
-            PreparedStatement pstmt = connection.prepareStatement("SELECT aantalm prijs, product, bestelling FROM BESTELLING_REGEL WHERE bestellingRegel_id = ?");
+        try(Connection connection = super.getConnection()) {
+            PreparedStatement pstmt = connection.prepareStatement("SELECT aantal, prijs, product, bestelling FROM BESTELLING_REGEL WHERE bestellingRegel_id = ?");
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
@@ -55,6 +55,10 @@ public class BestelregelDAO {
 
                 result = new Bestelregel(id, aantal, prijs, product, bestelling);
             }
+            
+            rs.close();
+			pstmt.close();
+			connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,9 +67,10 @@ public class BestelregelDAO {
         return result;
     }
 
-    public void create(Bestelregel bestelregel) {
-        try {
-
+    public boolean create(Bestelregel bestelregel) {
+    		int affectedRows = 0;
+    	
+        try(Connection connection = super.getConnection()) {
             PreparedStatement pstmt = connection.prepareStatement("INSERT INTO BESTELLING_REGEL(bestellingRegel_id, aantal, prijs, product, bestelling) VALUES(?,?,?,?,?)");
             pstmt.setInt(1, bestelregel.getId());
             pstmt.setInt(2, bestelregel.getAantal());
@@ -73,15 +78,22 @@ public class BestelregelDAO {
             pstmt.setInt(4, bestelregel.getProduct());
             pstmt.setInt(5, bestelregel.getBestelling());
             pstmt.execute();
-
+            
+            connection.commit();
+			pstmt.close();
+			connection.close();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
-    public void update(Bestelregel bestelregel) {
-        try {
-
+    public boolean update(Bestelregel bestelregel) {
+    		int affectedRows = 0;
+        
+    		try(Connection connection = super.getConnection()) {
             PreparedStatement pstmt = connection.prepareStatement("UPDATE BESTELLING_REGEL SET aantal = ?, prijs = ?, product = ?, bestelling = ? WHERE bestellingRegel_id = ?");
             pstmt.setInt(1, bestelregel.getAantal());
             pstmt.setFloat(2, bestelregel.getPrijs());
@@ -90,21 +102,33 @@ public class BestelregelDAO {
             pstmt.setInt(5, bestelregel.getId());
             pstmt.execute();
 
+            connection.commit();
+			pstmt.close();
+			connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    		
+    		return affectedRows >= 1;
     }
 
-    public void delete(Bestelregel bestelregel) {
-        try {
+    public boolean delete(Bestelregel bestelregel) {
+    		int affectedRows = 0;
+    		
+        try(Connection connection = super.getConnection()) {
 
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM BESTELLING_REGEL WHERE bestellingRegel_id = ?");
             pstmt.setInt(1, bestelregel.getId());
             pstmt.execute();
 
+            connection.commit();
+			pstmt.close();
+			connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
 }
