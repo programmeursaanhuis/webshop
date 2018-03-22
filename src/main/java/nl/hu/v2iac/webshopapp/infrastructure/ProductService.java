@@ -13,6 +13,10 @@ public class ProductService {
 		return productDAO.listAll();
 	}
 	
+	public Product findProduct(int id) {
+		return productDAO.findById(id);
+	}
+	
 	public boolean create(Product product) {
 		return productDAO.createProduct(product);
 	}

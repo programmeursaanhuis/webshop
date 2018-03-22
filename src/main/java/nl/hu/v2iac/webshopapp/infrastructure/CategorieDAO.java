@@ -1,6 +1,7 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
 import model.Categorie;
+import model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +62,9 @@ public class CategorieDAO {
         return result;
     }
 
-    public void create(Categorie categorie) {
+    public boolean create(Categorie categorie) {
+    		int affectedRows = 0;
+    	
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("INSERT INTO CATEGORIE(categorie_id, categorie) VALUES(?,?)");
@@ -72,9 +75,13 @@ public class CategorieDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+    		return affectedRows >= 1;
     }
 
-    public void update(Categorie categorie) {
+    public boolean update(Categorie categorie) {
+    		int affectedRows = 0;
+    		
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("UPDATE CATEGORIE SET categorie = ? WHERE categorie_id = ?");
@@ -85,9 +92,13 @@ public class CategorieDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
     }
 
-    public void delete(Categorie categorie) {
+    public boolean delete(Categorie categorie) {
+    	int affectedRows = 0;
+    	
         try {
 
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM CATEGORIE WHERE categorie_id = ?");
@@ -97,6 +108,20 @@ public class CategorieDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return affectedRows >= 1;
+    }
+    
+    public boolean createCategorie(Categorie categorie) {
+    		return create(categorie);
+    }
+    
+    public boolean updateCategorie(Categorie categorie) {
+    		return update(categorie);
+    }
+    
+    public boolean deleteCategorie(Categorie categorie) {
+    		return delete(categorie);
     }
 
 }
