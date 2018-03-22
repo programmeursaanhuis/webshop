@@ -31,10 +31,10 @@ public class ProductDAO extends ConnectionBroker{
 
                 result.add(new Product(id, naam, afbeelding, prijs, omschrijving, categorie));
             }
+            
             rs.close();
-    		pstmt.close();
-    		connection.close();
-
+    			pstmt.close();
+    			connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,8 +85,10 @@ public class ProductDAO extends ConnectionBroker{
             pstmt.setString(5, product.getOmschrijving());
             pstmt.setInt(6, product.getCategorie());
             pstmt.execute();
-    		pstmt.close();
-    		connection.close();
+    			
+            connection.commit();
+            pstmt.close();
+    			connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,10 +97,10 @@ public class ProductDAO extends ConnectionBroker{
     }
 
     private boolean update (Product product) {
-    	int affectedRows = 0;
-		
-    	try (Connection connection = super.getConnection()) {
-
+	    	int affectedRows = 0;
+			
+	    	try (Connection connection = super.getConnection()) {
+	
             PreparedStatement pstmt = connection.prepareStatement("UPDATE PRODUCT SET naam = ?, afbeelding = ?, prijs = ?, omschrijving = ?, categorie = ? WHERE product_id = ?");
             pstmt.setString(1, product.getNaam());
             pstmt.setString(2, product.getAfbeelding());
@@ -107,31 +109,34 @@ public class ProductDAO extends ConnectionBroker{
             pstmt.setInt(5, product.getCategorie());
             pstmt.setInt(6, product.getId());
             pstmt.execute();
-    		pstmt.close();
-    		connection.close();
+    		
+            connection.commit();
+            pstmt.close();
+    			connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    	return affectedRows >= 1;
+	    		
+	    	return affectedRows >= 1;
     }
 
     private boolean delete (Product product) {
-    	int affectedRows = 0;
-		
-    	try (Connection connection = super.getConnection()) {
-
+	    	int affectedRows = 0;
+			
+	    	try (Connection connection = super.getConnection()) {
+	
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM PRODUCT WHERE product_id = ?");
             pstmt.setInt(1, product.getId());
             pstmt.execute();
-    		pstmt.close();
-    		connection.close();
-
-            //TODO Get rid of references to Product in other tables
+    			
+            connection.commit();
+            pstmt.close();
+    			connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    	return affectedRows >= 1;
+	    	return affectedRows >= 1;
     }
     
     public boolean createProduct(Product product) {
