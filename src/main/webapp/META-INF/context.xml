@@ -12,5 +12,4 @@
 	name="jdbc/PostgresDS"
     global="jdbc/PostgresDS"
     type="javax.sql.DataSource" />
-    
 </Context>

@@ -26,7 +26,6 @@ import nl.hu.v2iac.webshopapp.model.CategorieService;
 import nl.hu.v2iac.webshopapp.model.ServiceProvider;
 import nl.hu.v2iac.webshopapp.model.Categorie;
 
-
 @Path("categorie")
 public class CategorieResource {
     private CategorieService service = ServiceProvider.getCategorieService();

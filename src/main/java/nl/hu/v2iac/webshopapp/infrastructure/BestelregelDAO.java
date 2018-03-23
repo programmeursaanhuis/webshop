@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import nl.hu.v2iac.webshopapp.model.Bestelregel;
 
 public class BestelregelDAO extends ConnectionBroker {

@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
+
 import nl.hu.v2iac.webshopapp.model.BestellingRegelService;
 import nl.hu.v2iac.webshopapp.model.Bestelregel;
 import nl.hu.v2iac.webshopapp.model.ServiceProvider;

@@ -11,9 +11,6 @@ import nl.hu.v2iac.webshopapp.model.Klant;
 
 public class KlantDAO extends ConnectionBroker {
 
-    public KlantDAO() {
-    }
-
     public List<Klant> listAll() {
         List<Klant> result = new ArrayList<Klant>();
 
