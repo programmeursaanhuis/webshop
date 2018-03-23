@@ -4,7 +4,6 @@ public class ServiceProvider {
 	private static ProductService productService = new ProductService();
 	private static CategorieService categorieService = new CategorieService();
 	private static KlantService klantService = new KlantService();
-	private static AdresService adresService = new AdresService();
 	private static BestellingRegelService bestellingRegelService = new BestellingRegelService();
 	
 	public static ProductService getProductService(){
@@ -21,9 +20,5 @@ public class ServiceProvider {
 
 	public static BestellingRegelService getBestellingRegelService() {
 		return bestellingRegelService;
-	}
-
-	public static AdresService getAdresService() {
-		return adresService;
 	}
 }

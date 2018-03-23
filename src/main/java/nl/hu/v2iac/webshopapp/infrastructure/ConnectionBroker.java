@@ -1,14 +1,8 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
-import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 public class ConnectionBroker {
     private String connectionURL = "jdbc:postgresql://localhost:5432/webshop";

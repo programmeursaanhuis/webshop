@@ -1,6 +1,5 @@
 package nl.hu.v2iac.webshopapp.model;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import nl.hu.v2iac.webshopapp.infrastructure.ProductDAO;

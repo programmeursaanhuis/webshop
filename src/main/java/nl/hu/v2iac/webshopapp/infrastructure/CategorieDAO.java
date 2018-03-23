@@ -1,7 +1,6 @@
 package nl.hu.v2iac.webshopapp.infrastructure;
 
 import nl.hu.v2iac.webshopapp.model.Categorie;
-import nl.hu.v2iac.webshopapp.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

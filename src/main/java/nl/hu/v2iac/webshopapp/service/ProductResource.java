@@ -101,7 +101,7 @@ public class ProductResource {
 				myFloatValue,
 				object.getString("omschrijving"),
 				object.getInt("categorie"));
-		
+		service.delete(product);
 		return Response.ok().build();
 	}
 	
